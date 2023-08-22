@@ -45,7 +45,7 @@
         (http/get (str runtime-api-url "invocation/next")
                   {:timeout timeout-ms})
         _ (prn "runtime headers and body" headers body)
-        id (:lambda-runtime-aws-request-id headers)]
+        id (get headers "lambda-runtime-aws-request-id")]
     {:event (cheshire/decode body keyword)
      :context headers
      :send-response!
