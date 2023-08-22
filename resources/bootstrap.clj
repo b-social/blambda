@@ -50,14 +50,18 @@
      :context headers
      :send-response!
      (fn [response]
-       (prn "lambda response" response)
-       (http/post (str runtime-api-url "invocation/" id "/response")
-                  {:body (cheshire/encode response)}))
+       (prn "lambda response" id response)
+       (try
+         (http/post (str runtime-api-url "invocation/" id "/response")
+           {:body (cheshire/encode response)})
+         (catch Exception e
+           (prn "Exception" e)
+           throw e)))
      :send-error!
      (fn [thrown]
        (http/post (str runtime-api-url "invocation/" id "/error")
-                  {:body (cheshire/encode
-                          (throwable->error-body thrown))}))}))
+         {:body (cheshire/encode
+                  (throwable->error-body thrown))}))}))
 
 (when handler
   (println "Starting babashka lambda event loop")
