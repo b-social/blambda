@@ -56,7 +56,7 @@
            {:body (cheshire/encode response)})
          (catch Exception e
            (prn "Exception" e)
-           (throw e))))
+           throw e)))
      :send-error!
      (fn [thrown]
        (http/post (str runtime-api-url "invocation/" id "/error")
