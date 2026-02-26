@@ -57,7 +57,7 @@
                               source-dir (fs/file source-dir f)
                               :else f)]]
     (println "Adding file:" (str f))
-    (when (fs/file? source-file)
+    (when (fs/regular-file? source-file)
       (let [relative-path (if source-dir
                             (fs/relativize (fs/file source-dir) source-file)
                             (fs/file f))
