@@ -99,7 +99,7 @@
         (lib/copy-files! opts source-files)
         (println "Compressing lambda:" (str lambda-zipfile))
         (apply shell {:dir work-dir}
-               "zip" lambda-zipfile source-files)))))
+               "zip" "-r" lambda-zipfile source-files)))))
 
 (defn build-all [{:keys [deps-layer-name] :as opts}]
   (build-runtime-layer opts)
