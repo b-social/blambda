@@ -55,10 +55,13 @@
           :let [source-file (cond
                               resource? (io/resource f)
                               source-dir (fs/file source-dir f)
-                              :else f)
-                parent (fs/parent f)]]
+                              :else f)]]
     (println "Adding file:" (str f))
-    (when parent
-      (fs/create-dirs parent))
-    (fs/delete-if-exists (fs/file work-dir f))
-    (fs/copy source-file work-dir)))
+    (when (fs/file? source-file)
+      (let [relative-path (if source-dir
+                            (fs/relativize (fs/file source-dir) source-file)
+                            (fs/file f))
+            target       (fs/file work-dir relative-path)]
+        (fs/create-dirs (fs/parent target))
+        (fs/delete-if-exists target)
+        (fs/copy source-file target)))))
